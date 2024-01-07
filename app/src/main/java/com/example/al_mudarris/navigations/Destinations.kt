@@ -19,3 +19,8 @@ object Dashboard:Destinations {
     override val name = "dashboard"
     override val route = "dashboard"
 }
+
+object Students:Destinations {
+    override val name = "students"
+    override val route = "students"
+}

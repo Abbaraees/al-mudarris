@@ -29,12 +29,12 @@ import com.example.al_mudarris.ui.theme.MyGreen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ActionMenuItem(
-    name: String = "Students",
-    paintDrawable: Int = R.drawable.school,
-    onClick: () -> Unit = {},
     modifier: Modifier = Modifier
         .width(100.dp)
         .height(100.dp),
+    name: String = "Students",
+    paintDrawable: Int = R.drawable.school,
+    onClick: () -> Unit = {},
 ) {
     Card(
         onClick = { onClick() },

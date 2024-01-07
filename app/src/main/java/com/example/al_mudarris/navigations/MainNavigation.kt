@@ -17,6 +17,7 @@ import com.example.al_mudarris.presentation.view.loginScreen.LoginScreen
 import com.example.al_mudarris.presentation.view.loginScreen.viewModels.LoginViewModel
 import com.example.al_mudarris.presentation.view.setupScreen.SetupScreen
 import com.example.al_mudarris.presentation.view.setupScreen.viewmodels.SetupViewModel
+import com.example.al_mudarris.presentation.view.studentsScreen.StudentsScreen
 
 @Composable
 fun MainNavigation() {
@@ -50,7 +51,10 @@ fun MainNavigation() {
         }
         navigation("dashboard", "main") {
             composable(Dashboard.route) {
-                DashboardScreen()
+                DashboardScreen(navController)
+            }
+            composable(Students.route) {
+                StudentsScreen(navController)
             }
         }
     }

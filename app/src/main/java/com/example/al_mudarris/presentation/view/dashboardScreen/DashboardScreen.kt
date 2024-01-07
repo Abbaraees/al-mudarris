@@ -22,14 +22,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.al_mudarris.R
+import com.example.al_mudarris.navigations.Students
 import com.example.al_mudarris.presentation.view.components.ActionMenuItem
 import com.example.al_mudarris.presentation.view.components.AssessmentCard
+import com.example.al_mudarris.presentation.view.components.MyTopAppBar
 import com.example.al_mudarris.ui.theme.MyGreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DashboardScreen() {
+fun DashboardScreen(navController: NavHostController) {
     val studentStats =listOf(
         "Total Students:" to "20",
         "Present Today:" to "19",
@@ -37,7 +41,7 @@ fun DashboardScreen() {
     )
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(text = "Al Mudarris") })
+            MyTopAppBar(title = "Al Mudarris")
         },
 
     ) { paddingValues ->
@@ -61,7 +65,13 @@ fun DashboardScreen() {
                     .padding(top = 16.dp)
                     .fillMaxWidth()
             ) {
-                ActionMenuItem(name = "Students", paintDrawable = R.drawable.school)
+                ActionMenuItem(
+                    name = "Students",
+                    paintDrawable =
+                    R.drawable.school
+                ) {
+                    navController.navigate(Students.route)
+                }
                 ActionMenuItem(name = "Attendance", paintDrawable = R.drawable.attendance_icon)
                 ActionMenuItem(name = "Assessment", paintDrawable = R.drawable.assessment_icon)
             }
@@ -140,5 +150,5 @@ fun DashboardScreen() {
 @Preview(showSystemUi = true)
 @Composable
 fun DashboardScreenPreview() {
-    DashboardScreen()
+    DashboardScreen(navController = rememberNavController())
 }

@@ -12,3 +12,4 @@ val Pink40 = Color(0xFF7D5260)
 
 val MyGreen = Color(0xFF27AE60)
 val MyRed = Color(0xFFEB5757)
+val TopAppBarColor = Color(0xE6E8F5ED)
