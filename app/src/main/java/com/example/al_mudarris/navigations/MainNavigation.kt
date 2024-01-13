@@ -8,19 +8,24 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.example.al_mudarris.database.AlmudarrisDatabase
 import com.example.al_mudarris.presentation.view.dashboardScreen.DashboardScreen
 import com.example.al_mudarris.presentation.view.loginScreen.LoginScreen
 import com.example.al_mudarris.presentation.view.loginScreen.viewModels.LoginViewModel
 import com.example.al_mudarris.presentation.view.setupScreen.SetupScreen
 import com.example.al_mudarris.presentation.view.setupScreen.viewmodels.SetupViewModel
 import com.example.al_mudarris.presentation.view.studentsScreen.StudentsScreen
+import com.example.al_mudarris.presentation.view.studentsScreen.viewmodels.StudentsViewModel
 
 @Composable
-fun MainNavigation() {
+fun MainNavigation(db: AlmudarrisDatabase) {
     val navController = rememberNavController()
     val context = LocalContext.current
     val sharedPreferences = context.getSharedPreferences("almudarris.prefs", Context.MODE_PRIVATE)
@@ -54,7 +59,18 @@ fun MainNavigation() {
                 DashboardScreen(navController)
             }
             composable(Students.route) {
-                StudentsScreen(navController)
+
+                val viewModel = viewModel<StudentsViewModel>(
+                    factory = object : ViewModelProvider.Factory {
+                        @Suppress("UNCHECKED_CAST")
+                        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                            return StudentsViewModel(db.studentDao) as T
+                        }
+                })
+
+                val state = viewModel.state.collectAsState()
+
+                StudentsScreen(navController, state = state, onEvent =viewModel::onEvent)
             }
         }
     }

@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.room.Room
+import com.example.al_mudarris.database.AlmudarrisDatabase
 import com.example.al_mudarris.navigations.MainNavigation
 import com.example.al_mudarris.ui.theme.AlMudarrisTheme
 import kotlinx.coroutines.delay
@@ -20,6 +22,15 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val viewModel = MyViewModel()
+
+//      Create the database instance
+        val db by lazy {
+            Room.databaseBuilder(
+                applicationContext,
+                AlmudarrisDatabase::class.java,
+                "almudarris.db"
+            ).build()
+        }
 
         installSplashScreen().apply {
             setKeepOnScreenCondition {
@@ -35,7 +46,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainNavigation()
+                    MainNavigation(db)
                 }
             }
         }
@@ -48,7 +59,7 @@ class MyViewModel: ViewModel() {
 
     init {
         viewModelScope.launch {
-            delay(3000)
+            delay(1000)
             _loading.value = false
         }
 
