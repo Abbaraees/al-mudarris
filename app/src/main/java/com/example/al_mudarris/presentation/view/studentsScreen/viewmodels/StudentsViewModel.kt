@@ -1,5 +1,6 @@
 package com.example.al_mudarris.presentation.view.studentsScreen.viewmodels
 
+import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.al_mudarris.database.daos.StudentDao
@@ -18,18 +19,18 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalCoroutinesApi::class)
 class StudentsViewModel(private val studentDao: StudentDao): ViewModel() {
     private val _state = MutableStateFlow(StudentsState())
+    private val searchValue = MutableStateFlow("")
 
-
-    var students = MutableStateFlow(true).flatMapLatest {
-        studentDao.getStudentsOrderedByName()
+    var students = searchValue.flatMapLatest {
+        when {
+            it.isBlank() -> studentDao.getStudentsOrderedByName()
+            else -> studentDao.searchStudent(it)
+        }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
-
 
     val state = combine(_state, students) {state, students ->
         state.copy(students = students)
-
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), StudentsState())
-
 
 
     fun onEvent(event: StudentsEvent) {
@@ -68,13 +69,11 @@ class StudentsViewModel(private val studentDao: StudentDao): ViewModel() {
                 _state.update {
                     it.copy(searchValue = event.searchValue)
                 }
+                searchValue.value = event.searchValue
             }
 
             StudentsEvent.SaveStudent -> {
                 if (_state.value.name.isBlank() || _state.value.gender.isBlank() || _state.value.dob.isBlank() ) {
-                    println("name ${state.value.name}")
-                    println("gender ${state.value.gender}")
-                    println("dob ${state.value.dob}")
                     return
                 }
                 else {
@@ -87,7 +86,6 @@ class StudentsViewModel(private val studentDao: StudentDao): ViewModel() {
                     viewModelScope.launch {
                         studentDao.addStudent(student)
                     }
-
                 }
 
                 _state.update {

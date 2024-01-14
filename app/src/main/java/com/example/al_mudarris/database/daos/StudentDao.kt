@@ -15,6 +15,9 @@ interface StudentDao {
     @Query("SELECT * FROM students ORDER BY name")
     fun getStudentsOrderedByName(): Flow<List<Student>>
 
+    @Query("SELECT * FROM students WHERE name LIKE '%' || :name ||  '%'")
+    fun searchStudent(name: String): Flow<List<Student>>
+
     @Delete
     fun deleteStudent(student: Student)
 }
