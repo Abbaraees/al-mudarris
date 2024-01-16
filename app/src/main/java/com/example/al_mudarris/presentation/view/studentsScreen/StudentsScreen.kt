@@ -31,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.al_mudarris.navigations.StudentInfo
 import com.example.al_mudarris.presentation.view.components.AddStudentDialog
 import com.example.al_mudarris.presentation.view.components.MyTopAppBar
 import com.example.al_mudarris.presentation.view.studentsScreen.screenEvents.StudentsEvent
@@ -107,7 +108,9 @@ fun StudentsScreen(
                                 color = MyGreen,
                                 modifier = Modifier
                                     .padding(vertical = 8.dp)
-                                    .clickable { }
+                                    .clickable {
+                                        navController.navigate(StudentInfo.route + "/${student.id}")
+                                    }
                                     .fillMaxWidth()
                             )
                             Divider(thickness = 1.dp, color = Color.DarkGray)

@@ -11,16 +11,20 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.al_mudarris.database.AlmudarrisDatabase
 import com.example.al_mudarris.presentation.view.dashboardScreen.DashboardScreen
 import com.example.al_mudarris.presentation.view.loginScreen.LoginScreen
 import com.example.al_mudarris.presentation.view.loginScreen.viewModels.LoginViewModel
 import com.example.al_mudarris.presentation.view.setupScreen.SetupScreen
 import com.example.al_mudarris.presentation.view.setupScreen.viewmodels.SetupViewModel
+import com.example.al_mudarris.presentation.view.studentInfoScreen.StudentInfoScreen
+import com.example.al_mudarris.presentation.view.studentInfoScreen.viewModels.StudentInfoViewModel
 import com.example.al_mudarris.presentation.view.studentsScreen.StudentsScreen
 import com.example.al_mudarris.presentation.view.studentsScreen.viewmodels.StudentsViewModel
 
@@ -71,6 +75,29 @@ fun MainNavigation(db: AlmudarrisDatabase) {
                 val state = viewModel.state.collectAsState()
 
                 StudentsScreen(navController, state = state, onEvent =viewModel::onEvent)
+            }
+            composable(
+                StudentInfo.route + "/{${StudentInfo.argStudentId}}",
+                arguments = listOf(navArgument(StudentInfo.argStudentId) {type = NavType.IntType})
+            ) {
+                val studentId = requireNotNull(it.arguments?.getInt(StudentInfo.argStudentId)) {
+                    "Student id id null"
+                }
+
+                val viewModel = viewModel<StudentInfoViewModel>(
+                    factory = object : ViewModelProvider.Factory {
+                        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                            return StudentInfoViewModel(db.studentDao) as T
+                        }
+                    }
+                )
+                val state = viewModel.state.collectAsState()
+                StudentInfoScreen(
+                    studentId,
+                    navController,
+                    state=state,
+                    onEvent=viewModel::onEvent
+                )
             }
         }
     }

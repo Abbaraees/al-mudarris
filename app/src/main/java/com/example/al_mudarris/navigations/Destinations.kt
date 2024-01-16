@@ -24,3 +24,9 @@ object Students:Destinations {
     override val name = "students"
     override val route = "students"
 }
+
+object StudentInfo:Destinations {
+    override val name = "Student Info"
+    override val route = "studentInfo"
+    val argStudentId = "argStudentId"
+}

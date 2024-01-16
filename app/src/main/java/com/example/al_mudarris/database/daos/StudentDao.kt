@@ -18,6 +18,9 @@ interface StudentDao {
     @Query("SELECT * FROM students WHERE name LIKE '%' || :name ||  '%'")
     fun searchStudent(name: String): Flow<List<Student>>
 
+    @Query("SELECT * FROM students WHERE id = :id")
+    suspend fun searchStudentById(id: Int): Student
+
     @Delete
-    fun deleteStudent(student: Student)
+    suspend fun deleteStudent(student: Student)
 }
