@@ -24,6 +24,7 @@ import com.example.al_mudarris.presentation.view.loginScreen.viewModels.LoginVie
 import com.example.al_mudarris.presentation.view.setupScreen.SetupScreen
 import com.example.al_mudarris.presentation.view.setupScreen.viewmodels.SetupViewModel
 import com.example.al_mudarris.presentation.view.studentInfoScreen.StudentInfoScreen
+import com.example.al_mudarris.presentation.view.studentInfoScreen.screenStates.StudentInfoState
 import com.example.al_mudarris.presentation.view.studentInfoScreen.viewModels.StudentInfoViewModel
 import com.example.al_mudarris.presentation.view.studentsScreen.StudentsScreen
 import com.example.al_mudarris.presentation.view.studentsScreen.viewmodels.StudentsViewModel
@@ -91,7 +92,7 @@ fun MainNavigation(db: AlmudarrisDatabase) {
                         }
                     }
                 )
-                val state = viewModel.state.collectAsState()
+                val state = viewModel.state.collectAsState(initial = StudentInfoState())
                 StudentInfoScreen(
                     studentId,
                     navController,

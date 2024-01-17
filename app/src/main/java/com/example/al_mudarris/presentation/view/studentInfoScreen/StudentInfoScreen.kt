@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.al_mudarris.presentation.view.components.DeleteStudentDialog
 import com.example.al_mudarris.presentation.view.components.MyTopAppBar
+import com.example.al_mudarris.presentation.view.components.UpdateStudentDialog
 import com.example.al_mudarris.presentation.view.studentInfoScreen.screenEvents.StudentInfoEvent
 import com.example.al_mudarris.presentation.view.studentInfoScreen.screenStates.StudentInfoState
 import com.example.al_mudarris.ui.theme.MyGreen
@@ -60,6 +61,9 @@ fun StudentInfoScreen(
         ) {
             if (state.value.showDeleteDialog) {
                 DeleteStudentDialog(navController, state = state, onEvent,)
+            }
+            if (state.value.showUpdateDialog) {
+                UpdateStudentDialog(state = state, onEvent = onEvent)
             }
             Column(
                 Modifier
@@ -173,7 +177,7 @@ fun StudentInfoScreen(
                             .padding(top = 4.dp)
                     ) {
                         Text(
-                            "${state.value.comment}",
+                            state.value.comment,
                             fontSize = 12.sp,
                             modifier = Modifier.padding(4.dp)
                         )
@@ -186,7 +190,7 @@ fun StudentInfoScreen(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     IconButton(
-                        onClick = { /*TODO*/ },
+                        onClick = { onEvent(StudentInfoEvent.ShowUpdateStudentDialog) },
                         colors = IconButtonDefaults.filledIconButtonColors(
                             containerColor = MyGreen,
                             contentColor = Color.White

@@ -9,5 +9,7 @@ data class StudentInfoState(
     val absents: Int = 0,
     val averageScores: Double = 0.0,
     val comment: String = "",
+    val emergencyContact: String = "",
     val showDeleteDialog: Boolean = false,
+    val showUpdateDialog: Boolean = false
 )
