@@ -29,8 +29,9 @@ fun DeleteStudentDialog(
             Row {
                 Button(
                     onClick = {
-                        navController.popBackStack(Students.route, false)
                         onEvent(StudentInfoEvent.DeleteStudent)
+                        onEvent(StudentInfoEvent.HideDeleteDialog)
+                        navController.popBackStack(Students.route, false)
                     },
                     modifier = Modifier.padding(horizontal = 8.dp)
                 ) {
