@@ -3,7 +3,9 @@ package com.example.al_mudarris.database.daos
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Upsert
+import com.example.al_mudarris.database.entites.ScoreWithAssessmentAndStudent
 import com.example.al_mudarris.database.entites.Student
 import kotlinx.coroutines.flow.Flow
 
@@ -23,4 +25,8 @@ interface StudentDao {
 
     @Delete
     suspend fun deleteStudent(student: Student)
+
+    @Transaction
+    @Query("SELECT * from assessment_scores WHERE studentId == :studentId")
+    fun getScoresForStudent(studentId: Int): Flow<List<ScoreWithAssessmentAndStudent>>
 }
