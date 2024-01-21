@@ -13,6 +13,7 @@ data class Assessment(
     @PrimaryKey(true)
     val id: Int = 0,
     val title: String,
+    val description: String,
     val releaseDate: String,
     val dueDate: String
 )

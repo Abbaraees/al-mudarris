@@ -18,6 +18,8 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.al_mudarris.database.AlmudarrisDatabase
+import com.example.al_mudarris.presentation.view.assessmentScreen.AssessmentScreen
+import com.example.al_mudarris.presentation.view.assessmentScreen.viewModels.AssessmentViewModel
 import com.example.al_mudarris.presentation.view.dashboardScreen.DashboardScreen
 import com.example.al_mudarris.presentation.view.loginScreen.LoginScreen
 import com.example.al_mudarris.presentation.view.loginScreen.viewModels.LoginViewModel
@@ -29,6 +31,7 @@ import com.example.al_mudarris.presentation.view.studentInfoScreen.viewModels.St
 import com.example.al_mudarris.presentation.view.studentsScreen.StudentsScreen
 import com.example.al_mudarris.presentation.view.studentsScreen.viewmodels.StudentsViewModel
 
+@Suppress("UNCHECKED_CAST")
 @Composable
 fun MainNavigation(db: AlmudarrisDatabase) {
     val navController = rememberNavController()
@@ -99,6 +102,18 @@ fun MainNavigation(db: AlmudarrisDatabase) {
                     state=state,
                     onEvent=viewModel::onEvent
                 )
+            }
+            composable(AssessmentDest.route) {
+                val viewModel = viewModel<AssessmentViewModel>(
+                    factory = object : ViewModelProvider.Factory {
+                        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                            return AssessmentViewModel(db.assessmentDao) as T
+                        }
+                    }
+                )
+                val state = viewModel.state.collectAsState()
+
+                AssessmentScreen(navController, state, onEvent=viewModel::onEvent)
             }
         }
     }

@@ -30,3 +30,8 @@ object StudentInfo:Destinations {
     override val route = "studentInfo"
     val argStudentId = "argStudentId"
 }
+
+object AssessmentDest:Destinations {
+    override val name = "Assessment Screen"
+    override val route = "assessment"
+}

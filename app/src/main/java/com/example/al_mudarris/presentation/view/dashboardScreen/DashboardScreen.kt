@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.al_mudarris.R
+import com.example.al_mudarris.navigations.AssessmentDest
 import com.example.al_mudarris.navigations.Students
 import com.example.al_mudarris.presentation.view.components.ActionMenuItem
 import com.example.al_mudarris.presentation.view.components.AssessmentCard
@@ -73,7 +74,9 @@ fun DashboardScreen(navController: NavHostController) {
                     navController.navigate(Students.route)
                 }
                 ActionMenuItem(name = "Attendance", paintDrawable = R.drawable.attendance_icon)
-                ActionMenuItem(name = "Assessment", paintDrawable = R.drawable.assessment_icon)
+                ActionMenuItem(name = "Assessment", paintDrawable = R.drawable.assessment_icon) {
+                    navController.navigate(AssessmentDest.route)
+                }
             }
             Divider(
                 color = MyGreen,
