@@ -18,6 +18,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.al_mudarris.database.AlmudarrisDatabase
+import com.example.al_mudarris.presentation.view.assessmentDetailScreen.AssessmentDetailScreen
 import com.example.al_mudarris.presentation.view.assessmentScreen.AssessmentScreen
 import com.example.al_mudarris.presentation.view.assessmentScreen.viewModels.AssessmentViewModel
 import com.example.al_mudarris.presentation.view.dashboardScreen.DashboardScreen
@@ -114,6 +115,9 @@ fun MainNavigation(db: AlmudarrisDatabase) {
                 val state = viewModel.state.collectAsState()
 
                 AssessmentScreen(navController, state, onEvent=viewModel::onEvent)
+            }
+            composable(AssessmentDetailDest.route) {
+                AssessmentDetailScreen()
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.example.al_mudarris.presentation.view.assessmentScreen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,6 +30,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.al_mudarris.navigations.AssessmentDest
+import com.example.al_mudarris.navigations.AssessmentDetailDest
 import com.example.al_mudarris.presentation.view.assessmentScreen.screenEvents.AssessmentEvent
 import com.example.al_mudarris.presentation.view.assessmentScreen.screenStates.AssessmentState
 import com.example.al_mudarris.presentation.view.components.AddAssessmentDialog
@@ -106,6 +109,7 @@ fun AssessmentScreen(
                                 modifier = Modifier
                                     .padding(vertical = 8.dp)
                                     .fillMaxWidth()
+                                    .clickable { navController.navigate(AssessmentDetailDest.route) }
                             )
                             Divider(thickness = 1.dp, color = Color.DarkGray)
                         }

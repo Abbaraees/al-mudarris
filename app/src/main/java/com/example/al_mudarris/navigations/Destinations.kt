@@ -35,3 +35,8 @@ object AssessmentDest:Destinations {
     override val name = "Assessment Screen"
     override val route = "assessment"
 }
+
+object AssessmentDetailDest:Destinations {
+    override val name = "Assessment Detail"
+    override val route = "assessmentDetail"
+}
