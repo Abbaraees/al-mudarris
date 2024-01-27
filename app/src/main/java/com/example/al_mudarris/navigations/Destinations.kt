@@ -39,4 +39,5 @@ object AssessmentDest:Destinations {
 object AssessmentDetailDest:Destinations {
     override val name = "Assessment Detail"
     override val route = "assessmentDetail"
+    val argAssessmentId = "argAssessmentID"
 }

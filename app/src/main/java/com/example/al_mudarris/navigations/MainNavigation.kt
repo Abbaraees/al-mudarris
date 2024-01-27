@@ -19,6 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.al_mudarris.database.AlmudarrisDatabase
 import com.example.al_mudarris.presentation.view.assessmentDetailScreen.AssessmentDetailScreen
+import com.example.al_mudarris.presentation.view.assessmentDetailScreen.viewModels.AssessmentDetailViewModel
 import com.example.al_mudarris.presentation.view.assessmentScreen.AssessmentScreen
 import com.example.al_mudarris.presentation.view.assessmentScreen.viewModels.AssessmentViewModel
 import com.example.al_mudarris.presentation.view.dashboardScreen.DashboardScreen
@@ -116,8 +117,27 @@ fun MainNavigation(db: AlmudarrisDatabase) {
 
                 AssessmentScreen(navController, state, onEvent=viewModel::onEvent)
             }
-            composable(AssessmentDetailDest.route) {
-                AssessmentDetailScreen()
+            composable(
+                AssessmentDetailDest.route + "/{${AssessmentDetailDest.argAssessmentId}}",
+                arguments = listOf(navArgument(AssessmentDetailDest.argAssessmentId) {type = NavType.IntType})
+            ) {
+                // Check for the assessment Id
+                val assessmentId = requireNotNull(it.arguments?.getInt(AssessmentDetailDest.argAssessmentId)) {
+                    "Assessment id is null"
+                }
+                val viewModel = viewModel<AssessmentDetailViewModel>(
+                    factory = object : ViewModelProvider.Factory {
+                        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                            return AssessmentDetailViewModel(db.assessmentDao) as T
+                        }
+                    }
+                )
+                val state = viewModel.state.collectAsState()
+                AssessmentDetailScreen(
+                    assessmentId = assessmentId,
+                    state = state,
+                    onEvent = viewModel::onEvent
+                )
             }
         }
     }

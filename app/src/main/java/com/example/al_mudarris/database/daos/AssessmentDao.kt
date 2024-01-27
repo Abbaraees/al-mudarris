@@ -21,7 +21,10 @@ interface AssessmentDao {
     @Query("SELECT * FROM assessments")
     fun getAssessments(): Flow<List<Assessment>>
 
+    @Query("SELECT * FROM assessments WHERE id = :assessmentId")
+    suspend fun getAssessment(assessmentId: Int): Assessment
+
     @Transaction
     @Query("SELECT * FROM assessment_scores WHERE assessmentId = :assessmentId")
-    fun getScoresForAssessment(assessmentId: Int): Flow<List<ScoreWithAssessmentAndStudent>>
+    suspend fun getScoresForAssessment(assessmentId: Int): List<ScoreWithAssessmentAndStudent>
 }

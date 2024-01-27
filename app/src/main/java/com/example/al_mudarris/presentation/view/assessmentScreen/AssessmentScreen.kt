@@ -109,7 +109,9 @@ fun AssessmentScreen(
                                 modifier = Modifier
                                     .padding(vertical = 8.dp)
                                     .fillMaxWidth()
-                                    .clickable { navController.navigate(AssessmentDetailDest.route) }
+                                    .clickable {
+                                        navController.navigate(AssessmentDetailDest.route + "/${assessment.id}")
+                                    }
                             )
                             Divider(thickness = 1.dp, color = Color.DarkGray)
                         }

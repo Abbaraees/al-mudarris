@@ -2,6 +2,7 @@ package com.example.al_mudarris.presentation.view.assessmentDetailScreen
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -18,6 +20,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -25,15 +29,24 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.al_mudarris.presentation.view.assessmentDetailScreen.screenEvents.AssessmentDetailEvent
+import com.example.al_mudarris.presentation.view.assessmentDetailScreen.screenStates.AssessmentDetailState
 import com.example.al_mudarris.presentation.view.components.MyTopAppBar
 import com.example.al_mudarris.ui.theme.MyGreen
 import com.example.al_mudarris.ui.theme.MyRed
+import kotlin.reflect.KFunction1
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AssessmentDetailScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    state: State<AssessmentDetailState>,
+    onEvent: KFunction1<AssessmentDetailEvent, Unit>,
+    assessmentId: Int
 ) {
+    // Load the assessment detail
+    onEvent(AssessmentDetailEvent.LoadAssessmentDetail(assessmentId))
+
     Scaffold(
         topBar = { MyTopAppBar(title = "Assessment")}
     ) {paddingValues ->
@@ -61,7 +74,7 @@ fun AssessmentDetailScreen(
                     ) {
                         Text(text = "Title:")
                         Text(
-                            "Assessment 1",
+                            state.value.title,
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -73,7 +86,7 @@ fun AssessmentDetailScreen(
                     ) {
                         Text(text = "Date Release:")
                         Text(
-                            "12/12/2023",
+                            state.value.releaseDate,
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -85,7 +98,7 @@ fun AssessmentDetailScreen(
                     ) {
                         Text(text = "Due Release:")
                         Text(
-                            "12/12/2023",
+                            state.value.dueDate,
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -97,7 +110,7 @@ fun AssessmentDetailScreen(
                     ) {
                         Text(text = "Average class score:")
                         Text(
-                            "18",
+                            "${state.value.averageScore}",
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -115,7 +128,7 @@ fun AssessmentDetailScreen(
                                 .padding(top = 4.dp)
                         ) {
                             Text(
-                                "Description",
+                                state.value.description,
                                 fontSize = 12.sp,
                                 modifier = Modifier.padding(4.dp)
                             )
@@ -201,38 +214,50 @@ fun AssessmentDetailScreen(
                         .fillMaxWidth()
                 )
 
-                LazyColumn {
-                    item {
-                        Row(
-                            Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Text(
-                                "Name",
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(vertical = 8.dp, horizontal = 32.dp)
-                            )
-                            Text(
-                                "Score",
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
-                            )
-                        }
-                    }
+                Row(
+                    Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        "Name",
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(vertical = 8.dp, horizontal = 32.dp)
+                    )
+                    Text(
+                        "Score",
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
+                    )
+                }
 
-                    items(30) {
-                        Row(
-                            Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Text(
-                                "Student $it",
-                                modifier = Modifier.padding(vertical = 8.dp, horizontal = 8.dp)
-                            )
-                            Text(
-                                "20",
-                                modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
-                            )
+                if (state.value.studentScores.isEmpty()) {
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            "No score Added Yet",
+                            fontSize = 16.sp,
+                            color = MyGreen
+                        )
+                    }
+                }
+                else {
+                    LazyColumn {
+                        items(state.value.studentScores) { score ->
+                            Row(
+                                Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    score.student.name,
+                                    modifier = Modifier.padding(vertical = 8.dp, horizontal = 8.dp)
+                                )
+                                Text(
+                                    "${score.scores.score}",
+                                    modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
+                                )
+                            }
                         }
                     }
                 }
@@ -245,5 +270,9 @@ fun AssessmentDetailScreen(
 @Preview(showSystemUi = true)
 @Composable
 fun AssessmentDetailPreview() {
-    AssessmentDetailScreen()
+//    AssessmentDetailScreen(
+//        state = viewModel.state,
+//        onEvent = viewModel::onEvent,
+//        assessmentId = assessmentId
+//    )
 }
