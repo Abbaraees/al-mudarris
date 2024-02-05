@@ -18,6 +18,8 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.al_mudarris.database.AlmudarrisDatabase
+import com.example.al_mudarris.presentation.view.addAssessmentScoreScreen.AddAssessmentScoreScreen
+import com.example.al_mudarris.presentation.view.addAssessmentScoreScreen.AddAssessmentScoreViewModel
 import com.example.al_mudarris.presentation.view.assessmentDetailScreen.AssessmentDetailScreen
 import com.example.al_mudarris.presentation.view.assessmentDetailScreen.viewModels.AssessmentDetailViewModel
 import com.example.al_mudarris.presentation.view.assessmentScreen.AssessmentScreen
@@ -136,7 +138,37 @@ fun MainNavigation(db: AlmudarrisDatabase) {
                 AssessmentDetailScreen(
                     assessmentId = assessmentId,
                     state = state,
-                    onEvent = viewModel::onEvent
+                    onEvent = viewModel::onEvent,
+                    navController = navController
+                )
+            }
+
+            composable(
+                AddAssessmentScoreDest.route + "/{${AddAssessmentScoreDest.argAssessmentId}}",
+                arguments = listOf(navArgument(AddAssessmentScoreDest.argAssessmentId) {type = NavType.IntType})
+            ) {
+                val assessmentId = requireNotNull(it.arguments?.getInt(AssessmentDetailDest.argAssessmentId)) {
+                    "Assessment id is null"
+                }
+
+                // Create the addAssessmentScore ViewModel
+                val viewModel = viewModel<AddAssessmentScoreViewModel>(
+                    factory = object : ViewModelProvider.Factory {
+                        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                            return AddAssessmentScoreViewModel(
+                                assessmentScoreDao = db.assessmentScoreDao,
+                                assessmentDao = db.assessmentDao,
+                                studentDao = db.studentDao,
+                                assessmentId = assessmentId
+                            ) as T
+                        }
+                    }
+                )
+
+
+                AddAssessmentScoreScreen(
+                    navController = navController,
+                    viewModel = viewModel
                 )
             }
         }

@@ -29,6 +29,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.example.al_mudarris.navigations.AddAssessmentScoreDest
 import com.example.al_mudarris.presentation.view.assessmentDetailScreen.screenEvents.AssessmentDetailEvent
 import com.example.al_mudarris.presentation.view.assessmentDetailScreen.screenStates.AssessmentDetailState
 import com.example.al_mudarris.presentation.view.components.MyTopAppBar
@@ -42,7 +44,8 @@ fun AssessmentDetailScreen(
     modifier: Modifier = Modifier,
     state: State<AssessmentDetailState>,
     onEvent: KFunction1<AssessmentDetailEvent, Unit>,
-    assessmentId: Int
+    assessmentId: Int,
+    navController: NavHostController
 ) {
     // Load the assessment detail
     onEvent(AssessmentDetailEvent.LoadAssessmentDetail(assessmentId))
@@ -141,7 +144,9 @@ fun AssessmentDetailScreen(
                         horizontalArrangement = Arrangement.Center
                     ) {
                         Button(
-                            onClick = {  },
+                            onClick = {
+                                navController.navigate(AddAssessmentScoreDest.route + "/${assessmentId}")
+                            },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MyGreen,
                                 contentColor = Color.White

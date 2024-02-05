@@ -26,7 +26,7 @@ import androidx.room.Relation
 data class AssessmentScore(
     val assessmentId: Int,
     val studentId: Int,
-    val score: Int
+    var score: Int
 )
 
 data class ScoreWithAssessmentAndStudent(
