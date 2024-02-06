@@ -28,5 +28,5 @@ interface StudentDao {
 
     @Transaction
     @Query("SELECT * from assessment_scores WHERE studentId == :studentId")
-    fun getScoresForStudent(studentId: Int): Flow<List<ScoreWithAssessmentAndStudent>>
+    suspend fun getScoresForStudent(studentId: Int): List<ScoreWithAssessmentAndStudent>
 }

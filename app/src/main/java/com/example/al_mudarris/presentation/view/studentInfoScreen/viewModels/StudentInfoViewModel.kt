@@ -7,7 +7,6 @@ import com.example.al_mudarris.database.entites.Student
 import com.example.al_mudarris.presentation.view.studentInfoScreen.screenEvents.StudentInfoEvent
 import com.example.al_mudarris.presentation.view.studentInfoScreen.screenStates.StudentInfoState
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -21,6 +20,7 @@ class StudentInfoViewModel(
     private fun loadStudent(studentId: Int) {
        viewModelScope.launch {
            val student = studentDao.searchStudentById(studentId)
+           val assessments = studentDao.getScoresForStudent(studentId)
            if (student != null) {
                _state.update {
                    it.copy(
@@ -28,7 +28,8 @@ class StudentInfoViewModel(
                        gender = student.gender,
                        dob = student.dob,
                        id = student.id,
-                       emergencyContact = student.emergencyContact
+                       emergencyContact = student.emergencyContact,
+                       assessments = assessments
                    )
                }
            }

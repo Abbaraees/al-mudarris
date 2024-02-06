@@ -1,5 +1,7 @@
 package com.example.al_mudarris.presentation.view.studentInfoScreen.screenStates
 
+import com.example.al_mudarris.database.entites.ScoreWithAssessmentAndStudent
+
 data class StudentInfoState(
     val id: Int = 0,
     val name: String = "",
@@ -11,5 +13,6 @@ data class StudentInfoState(
     val comment: String = "",
     val emergencyContact: String = "",
     val showDeleteDialog: Boolean = false,
-    val showUpdateDialog: Boolean = false
+    val showUpdateDialog: Boolean = false,
+    val assessments: List<ScoreWithAssessmentAndStudent> = listOf()
 )

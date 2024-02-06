@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
@@ -263,17 +264,17 @@ fun StudentInfoScreen(
                         }
                     }
 
-                    items(30) {
+                    items(state.value.assessments) {
                         Row(
                             Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Text(
-                                "Assessment $it",
+                                it.assessment.title,
                                 modifier = Modifier.padding(vertical = 8.dp, horizontal = 8.dp)
                             )
                             Text(
-                                "20",
+                                "${it.scores.score}",
                                 modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
                             )
                         }
