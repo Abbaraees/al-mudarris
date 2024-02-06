@@ -19,13 +19,16 @@ class AssessmentDetailViewModel(
     private fun loadAssessmentDetail(assessmentId: Int) {
         viewModelScope.launch {
             val assessment = assessmentDao.getAssessment(assessmentId)
+            val studentScores =  assessmentDao.getScoresForAssessment(assessmentId)
+            val averageScore = studentScores.sumOf { it.scores.score } / studentScores.size.toDouble()
 
             _state.update { it.copy(
                 title = assessment.title,
                 description = assessment.description,
                 dueDate = assessment.dueDate,
                 releaseDate = assessment.releaseDate,
-                studentScores = assessmentDao.getScoresForAssessment(assessmentId)
+                studentScores = studentScores,
+                averageScore = averageScore
             ) }
         }
     }
