@@ -41,6 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.al_mudarris.navigations.AddAssessmentScoreDest
 import com.example.al_mudarris.navigations.AssessmentDetailDest
 import com.example.al_mudarris.presentation.view.components.MyTopAppBar
 import com.example.al_mudarris.ui.theme.MyGreen
@@ -130,7 +131,7 @@ fun AddAssessmentScoreScreen(
                         Button(
                             onClick = {
                                 viewModel.onEvent(AddAssessmentScoreEvent.SaveScores)
-                                navController.navigate(AssessmentDetailDest.route + "/${state.value.assessment.id}")
+                                navController.popBackStack()
                             },
                             colors = ButtonDefaults.buttonColors(containerColor = MyRed)
                         ) {
