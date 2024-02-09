@@ -22,14 +22,19 @@ class AssessmentDetailViewModel(
             val studentScores =  assessmentDao.getScoresForAssessment(assessmentId)
             val averageScore = studentScores.sumOf { it.scores.score } / studentScores.size.toDouble()
 
-            _state.update { it.copy(
-                title = assessment.title,
-                description = assessment.description,
-                dueDate = assessment.dueDate,
-                releaseDate = assessment.releaseDate,
-                studentScores = studentScores,
-                averageScore = averageScore
-            ) }
+            if (assessment != null) {
+                _state.update {
+                    it.copy(
+                        assessmentId = assessmentId,
+                        title = assessment.title,
+                        description = assessment.description,
+                        dueDate = assessment.dueDate,
+                        releaseDate = assessment.releaseDate,
+                        studentScores = studentScores,
+                        averageScore = averageScore
+                    )
+                }
+            }
         }
     }
 
@@ -73,6 +78,24 @@ class AssessmentDetailViewModel(
             AssessmentDetailEvent.UpdateAssessment -> TODO()
             is AssessmentDetailEvent.LoadAssessmentDetail -> {
                 loadAssessmentDetail(event.assessmentId)
+            }
+
+            AssessmentDetailEvent.HideDeleteAssessmentDialog -> {
+                _state.update { it.copy(
+                    showDeleteDialog = false
+                ) }
+            }
+            AssessmentDetailEvent.ShowDeleteAssessmentDialog -> {
+                _state.update { it.copy(
+                    showDeleteDialog = true
+                ) }
+            }
+
+            AssessmentDetailEvent.DeleteAssessment -> {
+                viewModelScope.launch {
+                    val assessment = assessmentDao.getAssessment(_state.value.assessmentId)
+                    assessmentDao.deleteAssessment(assessment)
+                }
             }
         }
     }

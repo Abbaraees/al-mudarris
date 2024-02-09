@@ -33,6 +33,7 @@ import androidx.navigation.NavHostController
 import com.example.al_mudarris.navigations.AddAssessmentScoreDest
 import com.example.al_mudarris.presentation.view.assessmentDetailScreen.screenEvents.AssessmentDetailEvent
 import com.example.al_mudarris.presentation.view.assessmentDetailScreen.screenStates.AssessmentDetailState
+import com.example.al_mudarris.presentation.view.components.DeleteAssessmentDialog
 import com.example.al_mudarris.presentation.view.components.MyTopAppBar
 import com.example.al_mudarris.ui.theme.MyGreen
 import com.example.al_mudarris.ui.theme.MyRed
@@ -53,6 +54,9 @@ fun AssessmentDetailScreen(
     Scaffold(
         topBar = { MyTopAppBar(title = "Assessment")}
     ) {paddingValues ->
+        if (state.value.showDeleteDialog) {
+            DeleteAssessmentDialog(navController = navController, state = state , onEvent = onEvent )
+        }
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -118,7 +122,6 @@ fun AssessmentDetailScreen(
                         )
                     }
 
-
                     Column(
                         Modifier.padding(4.dp)
                     ) {
@@ -182,7 +185,7 @@ fun AssessmentDetailScreen(
                         }
 
                         Button(
-                            onClick = {  },
+                            onClick = { onEvent(AssessmentDetailEvent.ShowDeleteAssessmentDialog) },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MyRed,
                                 contentColor = Color.White

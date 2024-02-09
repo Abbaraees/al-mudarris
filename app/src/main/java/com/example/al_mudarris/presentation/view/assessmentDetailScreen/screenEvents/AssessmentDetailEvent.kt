@@ -9,6 +9,9 @@ sealed interface AssessmentDetailEvent {
     data class LoadAssessmentDetail(val assessmentId: Int): AssessmentDetailEvent
     object ShowUpdateAssessmentDialog: AssessmentDetailEvent
     object HideUpdateAssessmentDialog: AssessmentDetailEvent
+    object ShowDeleteAssessmentDialog: AssessmentDetailEvent
+    object HideDeleteAssessmentDialog: AssessmentDetailEvent
+    object DeleteAssessment: AssessmentDetailEvent
     object UpdateAssessment: AssessmentDetailEvent
 
 }
