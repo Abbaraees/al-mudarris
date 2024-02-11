@@ -4,7 +4,7 @@ import com.example.al_mudarris.database.entites.Assessment
 import com.example.al_mudarris.database.entites.ScoreWithAssessmentAndStudent
 
 data class AssessmentDetailState(
-    val assessmentId: Int = 0,
+    val assessment: Assessment? = null,
     val title: String = "",
     val releaseDate: String = "",
     val dueDate: String = "",

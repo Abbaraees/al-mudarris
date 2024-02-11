@@ -3,6 +3,7 @@ package com.example.al_mudarris.presentation.view.assessmentDetailScreen.viewMod
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.al_mudarris.database.daos.AssessmentDao
+import com.example.al_mudarris.database.entites.Assessment
 import com.example.al_mudarris.presentation.view.assessmentDetailScreen.screenEvents.AssessmentDetailEvent
 import com.example.al_mudarris.presentation.view.assessmentDetailScreen.screenStates.AssessmentDetailState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +26,7 @@ class AssessmentDetailViewModel(
             if (assessment != null) {
                 _state.update {
                     it.copy(
-                        assessmentId = assessmentId,
+                        assessment = assessment,
                         title = assessment.title,
                         description = assessment.description,
                         dueDate = assessment.dueDate,
@@ -75,7 +76,18 @@ class AssessmentDetailViewModel(
                     isEditing = true
                 ) }
             }
-            AssessmentDetailEvent.UpdateAssessment -> TODO()
+            AssessmentDetailEvent.UpdateAssessment -> {
+                val assessment = Assessment(
+                    id = _state.value.assessment?.id ?: 0,
+                    title = _state.value.title,
+                    description = _state.value.description,
+                    releaseDate = _state.value.releaseDate,
+                    dueDate = _state.value.dueDate
+                )
+                viewModelScope.launch {
+                    assessmentDao.addAssessment(assessment)
+                }
+            }
             is AssessmentDetailEvent.LoadAssessmentDetail -> {
                 loadAssessmentDetail(event.assessmentId)
             }
@@ -93,8 +105,7 @@ class AssessmentDetailViewModel(
 
             AssessmentDetailEvent.DeleteAssessment -> {
                 viewModelScope.launch {
-                    val assessment = assessmentDao.getAssessment(_state.value.assessmentId)
-                    assessmentDao.deleteAssessment(assessment)
+                    _state.value.assessment?.let { assessmentDao.deleteAssessment(it) }
                 }
             }
         }

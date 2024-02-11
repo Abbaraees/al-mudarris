@@ -35,6 +35,7 @@ import com.example.al_mudarris.presentation.view.assessmentDetailScreen.screenEv
 import com.example.al_mudarris.presentation.view.assessmentDetailScreen.screenStates.AssessmentDetailState
 import com.example.al_mudarris.presentation.view.components.DeleteAssessmentDialog
 import com.example.al_mudarris.presentation.view.components.MyTopAppBar
+import com.example.al_mudarris.presentation.view.components.UpdateAssessmentDialog
 import com.example.al_mudarris.ui.theme.MyGreen
 import com.example.al_mudarris.ui.theme.MyRed
 import kotlin.reflect.KFunction1
@@ -56,6 +57,9 @@ fun AssessmentDetailScreen(
     ) {paddingValues ->
         if (state.value.showDeleteDialog) {
             DeleteAssessmentDialog(navController = navController, state = state , onEvent = onEvent )
+        }
+        else if (state.value.isEditing) {
+            UpdateAssessmentDialog(state = state, onEvent = onEvent)
         }
         Column(
             modifier = modifier
@@ -167,7 +171,7 @@ fun AssessmentDetailScreen(
                         }
 
                         Button(
-                            onClick = {  },
+                            onClick = { onEvent(AssessmentDetailEvent.ShowUpdateAssessmentDialog) },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color(0xFFFFB300),
                                 contentColor = Color.White
